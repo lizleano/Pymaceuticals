@@ -7,7 +7,7 @@ This was a study done on 250 mice for a period of 45 days comparing the effects 
 
 * On the spreading of cancer, it was found that the mice that were treated with Capomulin had the least metastatic site.  The one that metastasised the most was those mice treated with Ketapril.
 
-* During the treatment, the mice treated with Infubinol had the highest mortality rate (63%).
+* During the treatment, the mice treated with Infubinol had the lowest survival rate (36%).
 
 * Overall, Capomulin treatment gave the most favorable outcome in the tumor growth (-13%), metastatic sites (1.5), and the survival rate (84%) 
 
