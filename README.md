@@ -9,7 +9,7 @@ This was a study done on 250 mice for a period of 45 days comparing the effects 
 
 * During the treatment, the mice treated with Infubinol had the highest mortality rate (63%).
 
-* Overall, Capomulin treatment gave the most favorable outcome in the tumor growth (-13%), metastatic sites (1.5), and the mortality rate (16%) 
+* Overall, Capomulin treatment gave the most favorable outcome in the tumor growth (-13%), metastatic sites (1.5), and the survival rate (84%) 
 
 
 
@@ -556,7 +556,7 @@ tumorVolume
 
 ```python
 timepoint_groupby = merged_pd.groupby(['Drug','Timepoint'])
-miceCount = timepoint_groupby['Mouse ID'].nunique()
+# miceCount = timepoint_groupby['Mouse ID'].nunique()
 
 ```
 
@@ -842,9 +842,12 @@ x_axis = tumor_unstack_df.index
 
 ```python
 # make a list of medicines to be analyzed
+totalMiceEachDrug = 25
 medicines = ['Capomulin','Infubinol','Ketapril','Placebo']
 markers = ['o','^','s','D']
 colors = ['red', 'blue','green','black']
+
+
 for x in medicines:
 #   get location in list
     y = medicines.index(x)
@@ -1452,15 +1455,20 @@ plt.show()
 
 
 ```python
-# find mouse count by drug and timepoint
+# find mouse count by drug and timepoint and calculate survival rate
 mouseCount = merged_pd.groupby(['Drug', 'Timepoint']).aggregate({'Mouse ID': 'nunique'})
-# mouseCount.head()
+mouseCount_pd = pd.DataFrame(mouseCount)
+mouseCount_pd['Total Mice In Study'] = totalMiceEachDrug
+mouseCount_pd['Survival Rate'] = 100 * (mouseCount_pd['Mouse ID'] / mouseCount_pd['Total Mice In Study'])
+    
+mouseRate_pd = mouseCount_pd.loc[medicines]['Survival Rate']
+mouseRate_df = pd.DataFrame(mouseRate_pd)
 ```
 
 
 ```python
 # pivot a level of column
-mouse_unstack_df = mouseCount.unstack(0)
+mouse_unstack_df = mouseRate_df.unstack(0)
 mouse_unstack_df
 ```
 
@@ -1485,29 +1493,17 @@ mouse_unstack_df
   <thead>
     <tr>
       <th></th>
-      <th colspan="10" halign="left">Mouse ID</th>
+      <th colspan="4" halign="left">Survival Rate</th>
     </tr>
     <tr>
       <th>Drug</th>
       <th>Capomulin</th>
-      <th>Ceftamin</th>
       <th>Infubinol</th>
       <th>Ketapril</th>
-      <th>Naftisol</th>
       <th>Placebo</th>
-      <th>Propriva</th>
-      <th>Ramicane</th>
-      <th>Stelasyn</th>
-      <th>Zoniferol</th>
     </tr>
     <tr>
       <th>Timepoint</th>
-      <th></th>
-      <th></th>
-      <th></th>
-      <th></th>
-      <th></th>
-      <th></th>
       <th></th>
       <th></th>
       <th></th>
@@ -1517,133 +1513,73 @@ mouse_unstack_df
   <tbody>
     <tr>
       <th>0</th>
-      <td>25</td>
-      <td>25</td>
-      <td>25</td>
-      <td>25</td>
-      <td>25</td>
-      <td>25</td>
-      <td>25</td>
-      <td>25</td>
-      <td>25</td>
-      <td>25</td>
+      <td>100.0</td>
+      <td>100.0</td>
+      <td>100.0</td>
+      <td>100.0</td>
     </tr>
     <tr>
       <th>5</th>
-      <td>25</td>
-      <td>21</td>
-      <td>25</td>
-      <td>23</td>
-      <td>23</td>
-      <td>24</td>
-      <td>24</td>
-      <td>25</td>
-      <td>24</td>
-      <td>24</td>
+      <td>100.0</td>
+      <td>100.0</td>
+      <td>92.0</td>
+      <td>96.0</td>
     </tr>
     <tr>
       <th>10</th>
-      <td>25</td>
-      <td>20</td>
-      <td>21</td>
-      <td>22</td>
-      <td>21</td>
-      <td>24</td>
-      <td>22</td>
-      <td>24</td>
-      <td>22</td>
-      <td>22</td>
+      <td>100.0</td>
+      <td>84.0</td>
+      <td>88.0</td>
+      <td>96.0</td>
     </tr>
     <tr>
       <th>15</th>
-      <td>24</td>
-      <td>19</td>
-      <td>21</td>
-      <td>19</td>
-      <td>21</td>
-      <td>20</td>
-      <td>16</td>
-      <td>24</td>
-      <td>22</td>
-      <td>21</td>
+      <td>96.0</td>
+      <td>84.0</td>
+      <td>76.0</td>
+      <td>80.0</td>
     </tr>
     <tr>
       <th>20</th>
-      <td>23</td>
-      <td>18</td>
-      <td>20</td>
-      <td>19</td>
-      <td>20</td>
-      <td>19</td>
-      <td>16</td>
-      <td>23</td>
-      <td>20</td>
-      <td>17</td>
+      <td>92.0</td>
+      <td>80.0</td>
+      <td>76.0</td>
+      <td>76.0</td>
     </tr>
     <tr>
       <th>25</th>
-      <td>22</td>
-      <td>18</td>
-      <td>18</td>
-      <td>19</td>
-      <td>18</td>
-      <td>17</td>
-      <td>14</td>
-      <td>23</td>
-      <td>19</td>
-      <td>16</td>
+      <td>88.0</td>
+      <td>72.0</td>
+      <td>76.0</td>
+      <td>68.0</td>
     </tr>
     <tr>
       <th>30</th>
-      <td>22</td>
-      <td>16</td>
-      <td>17</td>
-      <td>18</td>
-      <td>15</td>
-      <td>15</td>
-      <td>13</td>
-      <td>23</td>
-      <td>18</td>
-      <td>15</td>
+      <td>88.0</td>
+      <td>68.0</td>
+      <td>72.0</td>
+      <td>60.0</td>
     </tr>
     <tr>
       <th>35</th>
-      <td>22</td>
-      <td>14</td>
-      <td>12</td>
-      <td>17</td>
-      <td>15</td>
-      <td>14</td>
-      <td>10</td>
-      <td>21</td>
-      <td>16</td>
-      <td>14</td>
+      <td>88.0</td>
+      <td>48.0</td>
+      <td>68.0</td>
+      <td>56.0</td>
     </tr>
     <tr>
       <th>40</th>
-      <td>21</td>
-      <td>14</td>
-      <td>10</td>
-      <td>15</td>
-      <td>15</td>
-      <td>12</td>
-      <td>9</td>
-      <td>20</td>
-      <td>12</td>
-      <td>14</td>
+      <td>84.0</td>
+      <td>40.0</td>
+      <td>60.0</td>
+      <td>48.0</td>
     </tr>
     <tr>
       <th>45</th>
-      <td>21</td>
-      <td>13</td>
-      <td>9</td>
-      <td>11</td>
-      <td>13</td>
-      <td>11</td>
-      <td>7</td>
-      <td>20</td>
-      <td>11</td>
-      <td>14</td>
+      <td>84.0</td>
+      <td>36.0</td>
+      <td>44.0</td>
+      <td>44.0</td>
     </tr>
   </tbody>
 </table>
@@ -1654,16 +1590,17 @@ mouse_unstack_df
 
 ```python
 # plot the metastatic sites of tumor
+x_axis = mouse_unstack_df.index
 for x in medicines:
 #   get location in list
     y = medicines.index(x)
-    plt.plot(x_axis, mouse_unstack_df['Mouse ID'][x], marker=markers[y],color=colors[y], linestyle='--', label=x)
+    plt.plot(x_axis, mouse_unstack_df['Survival Rate'][x], marker=markers[y],color=colors[y], linestyle='--', label=x)
 
 plt.title('Survival During Treatment')
 plt.xlabel('Time (Days)')
-plt.ylabel('Survival Rat (%)')
-plt.xlim(metastatic_unstack_df.index[0], metastatic_unstack_df.index[-1])
-plt.ylim(mouse_unstack_df.min().min(), mouse_unstack_df.max().max()+1)
+plt.ylabel('Survival Rate (%)')
+plt.xlim(mouse_unstack_df.index[0], mouse_unstack_df.index[-1])
+plt.ylim(mouse_unstack_df.min().min()-10, mouse_unstack_df.max().max()+10)
 plt.legend(frameon=True, edgecolor="black", loc="upper right")
 
 plt.show()
