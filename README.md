@@ -825,18 +825,7 @@ tumor_unstack_df
 
 
 ```python
-# tumor_unstack_df.columns
-```
-
-
-```python
 x_axis = tumor_unstack_df.index
-# x_axis
-```
-
-
-```python
-# tumor_unstack_df['Tumor Volume (mm3)'].columns.get_loc("Capomulin")
 ```
 
 
@@ -862,7 +851,7 @@ plt.show()
 ```
 
 
-![png](output_14_0.png)
+![png](output_12_0.png)
 
 
 ## Metastic Response to Treatment
@@ -1448,7 +1437,7 @@ plt.show()
 ```
 
 
-![png](output_19_0.png)
+![png](output_17_0.png)
 
 
 ## Survival Rates
@@ -1607,7 +1596,7 @@ plt.show()
 ```
 
 
-![png](output_23_0.png)
+![png](output_21_0.png)
 
 
 ## Summary Bar Graph
@@ -1667,5 +1656,5 @@ plt.show()
 ```
 
 
-![png](output_26_0.png)
+![png](output_24_0.png)
 
